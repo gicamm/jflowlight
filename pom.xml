@@ -16,6 +16,7 @@
         <module>utils</module>
         <module>floodlight</module>
         <module>opendaylight</module>
+        <module>controller</module>
     </modules>
 
     <properties>

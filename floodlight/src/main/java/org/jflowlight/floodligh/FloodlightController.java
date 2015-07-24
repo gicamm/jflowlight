@@ -1,10 +1,10 @@
 package org.jflowlight.floodligh;
 
-import org.jflowlight.model.ControllerSummary;
-import org.jflowlight.model.Flows;
-import org.jflowlight.model.GenericResponse;
-import org.jflowlight.model.Switch;
+import org.jflowlight.controller.Controller;
+import org.jflowlight.model.*;
 import org.jflowlight.model.flow.Flow;
+import org.jflowlight.model.flow.FlowModel;
+import org.jflowlight.model.node.NodeConnectorModel;
 import org.jflowlight.model.route.SwitchRoute;
 import org.jflowlight.model.topology.Topology;
 import org.jflowlight.utils.rest.RestClient;
@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
  */
-public class FloodlightController {
+public class FloodlightController implements Controller {
 
     private final RestClient client;
 
@@ -206,5 +206,41 @@ public class FloodlightController {
     ////
     // END FIREWALL
     ////
+
+
+    @Override
+    public Map<String, OpenflowNode> getHosts() throws JolException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Map<String, OpenflowNode> getAllNode() throws JolException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public NodeConnectorModel getNodeConnection(String switchID, Integer port) throws JolException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Map<String, FlowModel> getFlow(String switchID, Integer tableID) throws JolException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public FlowModel getFlow(String switchID, Integer tableID, Integer entryID) throws JolException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void addFlowEntry(String flowname, String switchID, Integer priority, Integer tableID, Integer entryID, Collection<String> ipv4Srcs, Collection<String> ipv4Dsts, int ipBit, Collection<String> macSrcs, Collection<String> macDsts, Integer outputPort) throws JolException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteFlowEntry(String switchID, Integer tableID, Integer entryID) throws JolException {
+        throw new UnsupportedOperationException();
+    }
 
 }

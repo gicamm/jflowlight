@@ -1,6 +1,8 @@
 package org.jflowlight.opendaylight;
 
-import org.jflowlight.model.flow.*;
+import org.jflowlight.controller.Controller;
+import org.jflowlight.model.flow.FlowModel;
+import org.jflowlight.model.flow.InstructionModel;
 import org.jflowlight.model.node.NodeConnectorModel;
 import org.jflowlight.opendaylight.model.Instruction;
 import org.jflowlight.opendaylight.wrapper.connector.NodeConnectorWrapper;
@@ -34,7 +36,8 @@ import java.util.regex.Pattern;
 /**
  * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
  */
-public class OpenDayLightController implements AutoCloseable{
+public class OpenDayLightController implements Controller,
+        AutoCloseable{
 
     protected final static Logger LOGGER = LoggerFactory.getLogger(OpenDayLightController.class);
 
@@ -90,6 +93,7 @@ public class OpenDayLightController implements AutoCloseable{
      *
      * @return all hosts
      */
+    @Override
     public Map<String,OpenflowNode> getHosts(){
         final Map<String,OpenflowNode> toReturn = new HashMap<>();
         for(final OpenflowNode node : getAllNode().values()){
@@ -263,6 +267,7 @@ public class OpenDayLightController implements AutoCloseable{
      *
      * @return
      */
+    @Override
     public NodeConnectorModel getNodeConnection(final String switchID, final Integer port) throws JolException {
         final NodeConnectorWrapper nodeConnectorWrapper = client.get(NodeConnectorWrapper.class,
                 OpenDayLightConstants.RESTCONF,
@@ -379,6 +384,7 @@ public class OpenDayLightController implements AutoCloseable{
      *
      * @return
      */
+    @Override
     public Map<String, FlowModel> getFlow(final String switchID, final Integer tableID){
         final FlowsOpendaylight flowsOpendaylight = client.get(FlowsOpendaylight.class, OpenDayLightConstants.RESTCONF,
                 OpenDayLightConstants.OPERATIONAL,
@@ -404,6 +410,7 @@ public class OpenDayLightController implements AutoCloseable{
      *
      * @return
      */
+    @Override
     public FlowModel getFlow(final String switchID, final Integer tableID, final Integer entryID) throws JolException{
 
         final FlowOpendaylight flowNodeInventoryTable = client.get(FlowOpendaylight.class, OpenDayLightConstants.RESTCONF,
@@ -426,6 +433,7 @@ public class OpenDayLightController implements AutoCloseable{
     private Map<String, FlowModel> buildFlowModel(final FlowOpendaylight flow, final Integer tableID){
         return buildFlowModel(flow.getFlows(),tableID);
     }
+
     private Map<String, FlowModel> buildFlowModel(final FlowNodeInventoryTable fit, final Integer tableID){
         final Map<String,FlowModel> toReturn = new ConcurrentHashMap<>();
         FlowModel flow;
@@ -518,6 +526,7 @@ public class OpenDayLightController implements AutoCloseable{
      * @param outputPort
      * @throws JolException
      */
+    @Override
     public void addFlowEntry(final String flowname, final String switchID, final Integer priority, final Integer tableID, final Integer entryID, final Collection<String> ipv4Srcs, final Collection<String> ipv4Dsts, final int ipBit, final Collection<String> macSrcs,final Collection<String> macDsts,final Integer outputPort) throws JolException {
         String entry = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<flow xmlns=\"urn:opendaylight:flow:inventory\">\n" +
@@ -632,6 +641,14 @@ public class OpenDayLightController implements AutoCloseable{
         //TODO throw if error
     }
 
+    /**
+     *
+     * @param switchID
+     * @param tableID
+     * @param entryID
+     * @throws JolException
+     */
+    @Override
     public void deleteFlowEntry(final String switchID, final Integer tableID, final Integer entryID) throws JolException {
         LOGGER.trace("[{}]",client.delete("/restconf/config/opendaylight-inventory:nodes/node/" + switchID + "/table/" + tableID + "/flow/" + entryID + "/"));
     }

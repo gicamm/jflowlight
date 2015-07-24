@@ -1,12 +1,13 @@
 
 package org.jflowlight.opendaylight.wrapper.topology;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import org.jflowlight.opendaylight.model.NetworkTopology;
 
-@Generated("org.jsonschema2pojo")
+/**
+ * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
+ */
 public class NetworkTopologyWrapper {
 
     @SerializedName("network-topology")

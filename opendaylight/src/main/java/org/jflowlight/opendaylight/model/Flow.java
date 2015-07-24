@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
+/**
+ * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
+ */
 @Generated("org.jflowlight")
 public class Flow {
 

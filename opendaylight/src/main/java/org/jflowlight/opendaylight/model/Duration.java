@@ -3,6 +3,9 @@ package org.jflowlight.opendaylight.model;
 
 import com.google.gson.annotations.Expose;
 
+/**
+ * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
+ */
 public class Duration {
 
     @Expose

@@ -9,7 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
+ */
 @Generated("org.jsonschema2pojo")
 public class NodeConnectorWrapper implements Serializable {
 

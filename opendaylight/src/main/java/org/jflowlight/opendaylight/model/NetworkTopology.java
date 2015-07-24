@@ -6,6 +6,9 @@ import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 
+/**
+ * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
+ */
 @Generated("org.jflowlight")
 public class NetworkTopology {
 

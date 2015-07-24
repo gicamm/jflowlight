@@ -7,6 +7,9 @@ import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
+ */
 @Generated("org.jflowlight")
 public class FlowNodeInventoryTable {
 

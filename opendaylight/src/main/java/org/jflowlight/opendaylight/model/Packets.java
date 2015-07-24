@@ -4,6 +4,9 @@ package org.jflowlight.opendaylight.model;
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 
+/**
+ * @author Giovanni Cammarata <cammarata.giovanni@gmail.com>
+ */
 @Generated("org.jflowlight")
 public class Packets {
 
