@@ -7,8 +7,8 @@
     <groupId>com.jflowlight</groupId>
     <artifactId>jflowlight</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <name>jflowlight</name>
+    <version>0.8.2</version>
+    <name>jFlowLight</name>
     <inceptionYear>2015</inceptionYear>
 
     <modules>
