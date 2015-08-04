@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Jflowlight by giovannicammarata</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Jflowlight</h1>
+        <p>JFlowLight</p>
+
+        <p class="view"><a href="https://github.com/giovannicammarata/jflowlight">View the Project on GitHub <small>giovannicammarata/jflowlight</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/giovannicammarata/jflowlight/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/giovannicammarata/jflowlight/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/giovannicammarata/jflowlight">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="welcome-to-the-jflowlight-wiki" class="anchor" href="#welcome-to-the-jflowlight-wiki" aria-hidden="true"><span class="octicon octicon-link"></span></a>Welcome to the jFlowLight wiki!</h1>
+
+<p>jFlowLight is a SDN-controller client that allows provisioning and control of an SDN deployment. This includes support for flows, statistics.
+jFlowLight decouples the control from the northbound API provided by the SDN-Controller.
+Currently it supports <strong>OpenDaylight</strong> and <strong>Floodlight</strong> (experimentally).</p>
+
+<h2>
+<a id="latest-release-stable" class="anchor" href="#latest-release-stable" aria-hidden="true"><span class="octicon octicon-link"></span></a>Latest Release (Stable)</h2>
+
+<p><strong>0.8.2</strong></p>
+
+<h2>
+<a id="quick-usage-guide" class="anchor" href="#quick-usage-guide" aria-hidden="true"><span class="octicon octicon-link"></span></a>Quick Usage Guide</h2>
+
+<p>Below are some examples of the API usage.</p>
+
+<h3>
+<a id="creating-the-controller" class="anchor" href="#creating-the-controller" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating the controller</h3>
+
+<pre><code>`final Controller controller = ControllerFactory.builder().
+            setControllerType("opendaylight").
+            setAddress("192.168.1.55").
+            setPort(8181).
+            setUser("usr").
+            setPwd("strong_pwd").
+            build();`
+</code></pre>
+
+<h3>
+<a id="topology-operations" class="anchor" href="#topology-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Topology operations</h3>
+
+<p>Below are some examples of the API usage for the topology's operations.</p>
+
+<h4>
+<a id="getting-all-nodes" class="anchor" href="#getting-all-nodes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting all nodes</h4>
+
+<pre><code>`controller.getAllNode()`
+</code></pre>
+
+<h4>
+<a id="getting-all-hosts" class="anchor" href="#getting-all-hosts" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting all hosts</h4>
+
+<pre><code>`controller.getHosts()`
+</code></pre>
+
+<h3>
+<a id="statistics-operations" class="anchor" href="#statistics-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Statistics operations</h3>
+
+<p>Below are some examples of the API usage for retrieve statistical values such as buyte sent/received/drop, packet sent/received/drop, etc.</p>
+
+<h4>
+<a id="getting-stats" class="anchor" href="#getting-stats" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting stats</h4>
+
+<pre><code>`controller.getNodeConnection()`
+</code></pre>
+
+<h3>
+<a id="flow-operations" class="anchor" href="#flow-operations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Flow operations</h3>
+
+<p>Below are some examples of the API usage for flow's operations.</p>
+
+<h4>
+<a id="getting-flows" class="anchor" href="#getting-flows" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting flows</h4>
+
+<pre><code>`controller.getFlow(switchID,tableID)`
+</code></pre>
+
+<h4>
+<a id="getting-a-flow" class="anchor" href="#getting-a-flow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting a flow</h4>
+
+<pre><code>`controller.getFlow(switchID,tableID,entryID)`
+</code></pre>
+
+<h4>
+<a id="adding-a-flow" class="anchor" href="#adding-a-flow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding a flow</h4>
+
+<pre><code>`controller.addFlowEntry(flowname,switchID,priority,tableID,entryID,ipv4Srcs, ipv4Dsts,ipBit,macSrcs,macDsts,outputPort)`
+</code></pre>
+
+<p><strong>NOTE</strong>: some parameters can be null</p>
+
+<h4>
+<a id="deleting-a-flow" class="anchor" href="#deleting-a-flow" aria-hidden="true"><span class="octicon octicon-link"></span></a>Deleting a flow</h4>
+
+<pre><code>`controller.deleteFlowEntry(switchID,tableID,entryID)`
+</code></pre>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/giovannicammarata">giovannicammarata</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
