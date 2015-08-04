@@ -1,3 +1,3 @@
 # jflowlight
 
-[jFlowLight wiki](https://github.com/giovannicammarata/jflowlight/wiki)
+For usage see the [jFlowLight wiki](https://github.com/giovannicammarata/jflowlight/wiki)
