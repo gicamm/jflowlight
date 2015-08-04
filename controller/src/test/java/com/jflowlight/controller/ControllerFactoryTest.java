@@ -12,7 +12,7 @@ public class ControllerFactoryTest {
 
     @Test
     public void testGet() throws Exception {
-        final Controller controller = ControllerFactory.get(ControllerFactory.ControllerType.OPENDAYLIGHT, "address", 8181, "user", "strong_pwd");
+        final Controller controller = ControllerFactory.get("opendaylight",null, "address", 8181, "user", "strong_pwd");
     }
 
 }
