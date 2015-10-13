@@ -31,11 +31,11 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.5.0</version>
         </dependency>
-        <dependency>
-            <groupId>net.projectfloodlight</groupId>
-            <artifactId>floodlight</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>net.projectfloodlight</groupId>-->
+            <!--<artifactId>floodlight</artifactId>-->
+            <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
         <!--<dependency>-->
             <!--<groupId>org.projectfloodlight</groupId>-->
             <!--<artifactId>openflowj</artifactId>-->
