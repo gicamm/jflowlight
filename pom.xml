@@ -17,6 +17,7 @@
         <module>floodlight</module>
         <module>opendaylight</module>
         <module>controller</module>
+        <module>onos</module>
     </modules>
 
     <properties>
@@ -43,7 +44,7 @@
                 <version>2.16</version>
 
                 <configuration>
-                    <skipTests>true</skipTests>
+                    <skipTests>false</skipTests>
                     <testFailureIgnore>true</testFailureIgnore>
                 </configuration>
             </plugin>
