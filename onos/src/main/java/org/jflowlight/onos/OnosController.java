@@ -34,6 +34,9 @@ import org.jflowlight.onos.model.Selector;
 import org.jflowlight.onos.model.Statistics;
 import org.jflowlight.onos.model.Treatment;
 
+/**
+ * @author Alessandro Di Stefano
+ */
 public class OnosController implements Controller {
 	private final RestClient client;
 	
@@ -73,7 +76,7 @@ public class OnosController implements Controller {
 			tmp.addLink(links);
 			toReturn.put(host.getId(), tmp);
 		}
-		return null;
+		return toReturn;
 	}
 
 	@Override
@@ -92,7 +95,7 @@ public class OnosController implements Controller {
 	@Override
 	public Map<String, FlowModel> getFlow(String switchID, Integer tableID)
 			throws JolException {
-		
+		if (switchID == null) switchID = "";
 		final FlowRules flows = client.get(FlowRules.class, "onos","v1","flows", switchID);
         final Map<String,FlowModel> toReturn = new ConcurrentHashMap<>();
         FlowModel toMap;
@@ -131,50 +134,70 @@ public class OnosController implements Controller {
 		Treatment treatment = new Treatment();
 		List<Instruction> instructions = new ArrayList<>();
 		Instruction instruction = new Instruction();
-		instruction.setPort(outputPort.toString());
-		instruction.setType("OUTPUT");
+		if (outputPort != null)
+		{
+			if (outputPort == -1)
+				instruction.setPort("CONTROLLER");	
+			else if (outputPort != null)
+				instruction.setPort(outputPort.toString());
+		
+			instruction.setType("OUTPUT");
+		}
 		instructions.add(instruction);
 		treatment.setInstructions(instructions);
 		flow.setTreatment(treatment);
 		/* CRITERIA */
 		Selector selector = new Selector();
 		List<Criterion> criteria = new ArrayList<>();
-		for (String mac : macSrcs)
+		if (macSrcs != null) 
 		{
-			Criterion tmp = new Criterion();
-			tmp.setType("ETH_SRC");
-			tmp.setMac(mac);
-			criteria.add(tmp);
+			for (String mac : macSrcs)
+			{
+				Criterion tmp = new Criterion();
+				tmp.setType("ETH_SRC");
+				tmp.setMac(mac);
+				criteria.add(tmp);
+			}
 		}
-		for (String mac : macDsts)
+		if (macDsts != null)
 		{
-			Criterion tmp = new Criterion();
-			tmp.setType("ETH_DST");
-			tmp.setMac(mac);
-			criteria.add(tmp);
-		}
-		
-		for (String ip: ipv4Srcs)
-		{
-			Criterion tmp = new Criterion();
-			tmp.setType("IPV4_SRC");
-			tmp.setMac(ip);
-			criteria.add(tmp);
+			for (String mac : macDsts)
+			{
+				Criterion tmp = new Criterion();
+				tmp.setType("ETH_DST");
+				tmp.setMac(mac);
+				criteria.add(tmp);
+			}
 		}
 		
-		for (String ip: ipv4Dsts)
+		if (ipv4Srcs != null)
 		{
-			Criterion tmp = new Criterion();
-			tmp.setType("IPV4_DST");
-			tmp.setMac(ip);
-			criteria.add(tmp);
+			for (String ip: ipv4Srcs)
+			{
+				Criterion tmp = new Criterion();
+				tmp.setType("IPV4_SRC");
+				tmp.setMac(ip);
+				criteria.add(tmp);
+			}
 		}
-		
+		if (ipv4Dsts != null)
+		{
+			for (String ip: ipv4Dsts)
+			{
+				Criterion tmp = new Criterion();
+				tmp.setType("IPV4_DST");
+				tmp.setMac(ip);
+				criteria.add(tmp);
+			}
+		}
 		selector.setCriteria(criteria);
 		flow.setSelector(selector);
+		flow.setIsPermanent(true);
+		
 		/* END CRITERIA */
 		Gson gson = new Gson();
 		String json = gson.toJson(flow);
+		System.out.println(json);
 		client.post("/onos/v1/flows/"+switchID, json);
 		
 	}

@@ -11,6 +11,9 @@ import com.google.gson.annotations.Expose;
  * "ipAddresses":["10.0.0.16"],
  * "location":{"elementId":"of:000000000000000d","port":"6"}
  * }*/
+/**
+ * @author Alessandro Di Stefano
+ */
 public class Host {
 	@Expose
 	private String id;

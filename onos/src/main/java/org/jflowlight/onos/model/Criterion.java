@@ -4,7 +4,9 @@ import java.util.AbstractMap;
 import java.util.Map;
 
 import com.google.gson.annotations.Expose;
-
+/**
+ * @author Alessandro Di Stefano
+ */
 public class Criterion {
 	@Expose
 	private String type = null;

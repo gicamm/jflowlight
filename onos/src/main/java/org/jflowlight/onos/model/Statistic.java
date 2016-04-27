@@ -1,7 +1,9 @@
 package org.jflowlight.onos.model;
 
 import com.google.gson.annotations.Expose;
-
+/**
+ * @author Alessandro Di Stefano
+ */
 public class Statistic {
 	
 	@Expose

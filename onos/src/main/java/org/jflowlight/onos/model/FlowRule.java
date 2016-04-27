@@ -36,6 +36,9 @@ import com.google.gson.annotations.Expose;
  * 
  * 
  */
+/**
+ * @author Alessandro Di Stefano
+ */
 public class FlowRule {
 	@Expose
     private String id;
@@ -62,6 +65,25 @@ public class FlowRule {
     private Long bytes;
     @Expose
     private Long packets;
+    
+    @Expose
+    private Boolean isPermanent;
+    
+    
+	/**
+	 * @return the isPermanent
+	 */
+	public Boolean getIsPermanent() {
+		return isPermanent;
+	}
+
+	/**
+	 * @param isPermanent the isPermanent to set
+	 */
+	public void setIsPermanent(Boolean isPermanent) {
+		this.isPermanent = isPermanent;
+	}
+
 	/**
 	 * @return the bytes
 	 */
