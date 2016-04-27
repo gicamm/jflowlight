@@ -1,9 +1,9 @@
 .project
 .settings/
-api/target/
-onos/target/
-controller/target/
-floodlight/target/
-onos/target/
-opendaylight/target/
-utils/target
+api/target/*
+onos/target/*
+controller/target/*
+floodlight/target/*
+onos/target/*
+opendaylight/target/*
+utils/target/*
