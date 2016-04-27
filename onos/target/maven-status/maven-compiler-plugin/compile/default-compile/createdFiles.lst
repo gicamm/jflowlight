@@ -1,1 +1,15 @@
+onos/model/Selector.class
+onos/model/Instruction.class
 onos/OnosController.class
+onos/model/Treatment.class
+onos/model/Link.class
+onos/model/Hosts.class
+onos/model/Host.class
+onos/model/Criterion.class
+onos/model/Links.class
+onos/model/FlowRule.class
+onos/model/Statistic.class
+onos/model/Statistics.class
+onos/model/Connection.class
+onos/model/FlowRules.class
+onos/model/Location.class

@@ -1,4 +1,4 @@
-import onos.OnosController;
+import org.jflowlight.onos.OnosController;
 import org.junit.Test;
 
 public class Tester {
