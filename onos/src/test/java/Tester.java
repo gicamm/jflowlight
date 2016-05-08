@@ -28,7 +28,9 @@ public class Tester {
 					null, null, 
 					0, macSrc, null, 
 					new Integer(10));
+			
 			System.out.println(controller.getStats().toString());
+			System.out.println(controller.getTopology().toString());
 		}
 		catch(Exception e)
 		{

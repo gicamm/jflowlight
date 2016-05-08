@@ -23,6 +23,8 @@ import org.jflowlight.utils.rest.RestClient;
 import com.google.gson.Gson;
 
 import org.jflowlight.onos.model.Criterion;
+import org.jflowlight.onos.model.Device;
+import org.jflowlight.onos.model.Devices;
 import org.jflowlight.onos.model.FlowRule;
 import org.jflowlight.onos.model.FlowRules;
 import org.jflowlight.onos.model.Host;
@@ -33,6 +35,10 @@ import org.jflowlight.onos.model.Links;
 import org.jflowlight.onos.model.Selector;
 import org.jflowlight.onos.model.Statistics;
 import org.jflowlight.onos.model.Treatment;
+import org.jflowlight.onos.model.topology.Cluster;
+import org.jflowlight.onos.model.topology.Clusters;
+import org.jflowlight.onos.model.topology.TopoDevices;
+import org.jflowlight.onos.model.topology.Topology;
 
 /**
  * @author Alessandro Di Stefano
@@ -78,7 +84,32 @@ public class OnosController implements Controller {
 		}
 		return toReturn;
 	}
-
+	
+	
+	public Map<String, OpenflowNode> getDevices() throws JolException {
+		final Map<String, OpenflowNode> toReturn = new ConcurrentHashMap<>();
+		final Devices devices = client.get(Devices.class, "onos/v1/devices");
+		for (final Device device : devices.getDevices())
+		{
+			final OpenflowNode tmp = new OpenflowNode(device.getId(), device.getId());
+			tmp.setAddresses(new Address(device.getAnnotations().getManagementAddress(), device.getChassisId()));
+			toReturn.put(device.getId(), tmp);
+		}
+		return toReturn;
+	
+	}
+	
+	public Topology getTopology() throws JolException {
+		final Topology toReturn = client.get(Topology.class, "onos/v1/topology");
+		toReturn.setGraph(client.get(Clusters.class, "onos/v1/topology/clusters"));
+		for (final Cluster cluster : toReturn.getGraph().getClusters())
+		{
+			cluster.setDevices(client.get(TopoDevices.class, "onos/v1/topology/clusters/" + cluster.getId() + "/devices"));
+			cluster.setLinks(client.get(Links.class, "onos/v1/topology/clusters/" + cluster.getId() + "/links"));
+		}
+		
+		return toReturn;
+	}
 	@Override
 	public Map<String, OpenflowNode> getAllNode() throws JolException {
 		// TODO Auto-generated method stub
