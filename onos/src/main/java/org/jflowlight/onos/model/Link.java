@@ -9,6 +9,10 @@ public class Link {
 	private Connection src;
 	@Expose
 	private Connection dst;
+	@Expose
+	private String type;
+	@Expose 
+	private String state;
 	/**
 	 * @return the src
 	 */
@@ -32,5 +36,29 @@ public class Link {
 	 */
 	public void setDst(Connection dst) {
 		this.dst = dst;
+	}
+	/**
+	 * @return the type
+	 */
+	public String getType() {
+		return type;
+	}
+	/**
+	 * @param type the type to set
+	 */
+	public void setType(String type) {
+		this.type = type;
+	}
+	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
 	}
 }
