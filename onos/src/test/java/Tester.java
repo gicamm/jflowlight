@@ -31,10 +31,10 @@ public class Tester {
 //			
 //			System.out.println(controller.getStats().toString());
 //			System.out.println(controller.getTopology().toString());
-			System.out.println(controller.getDevicesStatistics().get(0).getDeviceId());
-			System.out.println(controller.getDevicesStatistics().get(0).getBytes());
-			System.out.println(controller.getDevicesStatistics().get(0).getPackets());
-			System.out.println(controller.getDevicesStatistics().get(0).getTables().get(0).getPackets());
+			System.out.println(controller.getDevicesStatistics().get("of:0000000000000b11").getDeviceId());
+			System.out.println(controller.getDevicesStatistics().get("of:0000000000000b11").getBytes());
+			System.out.println(controller.getDevicesStatistics().get("of:0000000000000b11").getPackets());
+			System.out.println(controller.getDevicesStatistics().get("of:0000000000000b11").getTables().get(0).getPackets());
 		}
 		catch(Exception e)
 		{

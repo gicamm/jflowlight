@@ -156,17 +156,17 @@ public class OnosController implements Controller {
 	}
 
 	
-	public List<DeviceStats> getDevicesStatistics()
+	public Map<String, DeviceStats> getDevicesStatistics()
 	{
 		final Devices devices = client.get(Devices.class, "onos/v1/devices");
 		
-		final List<DeviceStats> devicesStats = new ArrayList<>();
+		final Map<String, DeviceStats> devicesStats = new ConcurrentHashMap<>();
 		for (final Device device : devices.getDevices())
 		{
 			DeviceStats tmp = getDeviceStatistics(device.getId());
 			if (tmp == null)
 				continue;
-			devicesStats.add(tmp);
+			devicesStats.put(device.getId(), tmp);
 		}
 		return devicesStats;
 	}
