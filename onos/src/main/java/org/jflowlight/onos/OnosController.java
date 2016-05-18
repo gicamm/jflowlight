@@ -39,6 +39,8 @@ import org.jflowlight.onos.model.topology.Cluster;
 import org.jflowlight.onos.model.topology.Clusters;
 import org.jflowlight.onos.model.topology.TopoDevices;
 import org.jflowlight.onos.model.topology.Topology;
+import org.jflowlight.onos.statistics.DeviceStats;
+import org.jflowlight.onos.statistics.TableStats;
 
 /**
  * @author Alessandro Di Stefano
@@ -77,7 +79,8 @@ public class OnosController implements Controller {
 			
 			tmp.setAddresses(new Address(host.getIpAddresses().get(0), host.getMac()));
 			final Map<String, LinkModel> links = new HashMap<>();
-			LinkModel link = new LinkModel(host.getLocation().getElementId(),Integer.parseInt(host.getLocation().getPort()), null, LinkType.SWITCH_SWITCH);
+			LinkModel link = new LinkModel(host.getLocation().getElementId(), 
+					Integer.parseInt(host.getLocation().getPort()), null, LinkType.SWITCH_SWITCH);
 			links.put(host.getLocation().getElementId(), link);
 			tmp.addLink(links);
 			toReturn.put(host.getId(), tmp);
@@ -92,7 +95,8 @@ public class OnosController implements Controller {
 		for (final Device device : devices.getDevices())
 		{
 			final OpenflowNode tmp = new OpenflowNode(device.getId(), device.getId());
-			tmp.setAddresses(new Address(device.getAnnotations().getManagementAddress(), device.getChassisId()));
+			tmp.setAddresses(new Address(device.getAnnotations()
+					.getManagementAddress(), device.getChassisId()));
 			toReturn.put(device.getId(), tmp);
 		}
 		return toReturn;
@@ -112,8 +116,10 @@ public class OnosController implements Controller {
 	}
 	@Override
 	public Map<String, OpenflowNode> getAllNode() throws JolException {
-		// TODO Auto-generated method stub
-		return null;
+		final Map<String, OpenflowNode> toReturn = new ConcurrentHashMap<>();
+		toReturn.putAll(getDevices());
+		toReturn.putAll(getHosts());
+		return toReturn;
 	}
 
 	@Override
@@ -149,6 +155,64 @@ public class OnosController implements Controller {
         return toMap;
 	}
 
+	
+	public Map<String, DeviceStats> getDevicesStatistics()
+	{
+		final Devices devices = client.get(Devices.class, "onos/v1/devices");
+		
+		final Map<String, DeviceStats> devicesStats = new ConcurrentHashMap<>();
+		for (final Device device : devices.getDevices())
+		{
+			DeviceStats tmp = getDeviceStatistics(device.getId());
+			if (tmp == null)
+				continue;
+			devicesStats.put(device.getId(), tmp);
+		}
+		return devicesStats;
+	}
+	
+	public DeviceStats getDeviceStatistics(String deviceId)
+	{
+//		final Devices devices = client.get(Devices.class, "onos/v1/devices");
+//		
+//		final List<DeviceStats> devicesStats = new ArrayList<>();
+//		for (final Device device : devices.getDevices())
+//		{
+//			deviceId = device.getId();		
+		final DeviceStats deviceStats = new DeviceStats(); // Statistics for the single device
+		deviceStats.setDeviceId(deviceId);
+		final List<TableStats> tablesStats = new ArrayList<>(); // Statistics for the tables of the device
+		deviceStats.setTables(tablesStats);
+		final FlowRules flows;
+		try
+		{
+			flows = client.get(FlowRules.class, "onos","v1","flows", deviceId);
+		} catch (Exception e)
+		{
+			return null;
+		}
+		for (final FlowRule flow: flows.getFlows())
+		{
+			Integer tableId = Integer.valueOf(flow.getTableId().intValue());
+			// Accumulator
+			TableStats tableStats = new TableStats();
+			tableStats.setBytes(flow.getBytes());
+			tableStats.setPackets(flow.getPackets());
+			tableStats.setDeviceId(deviceId);
+			tableStats.setTableId(tableId);
+			try {
+				tablesStats.get(tableId).setBytes(tablesStats.get(tableId).getBytes() + tableStats.getBytes());
+				tablesStats.get(tableId).setPackets(tablesStats.get(tableId).getPackets() + tableStats.getPackets());
+				
+			} catch (IndexOutOfBoundsException e) {
+				tablesStats.add(tableId, tableStats);
+			}
+			
+		}
+//			devicesStats.add(deviceStats);
+//		}
+		return deviceStats;
+	}
 	@Override
 	public void addFlowEntry(String flowname, String switchID,
 			Integer priority, Integer tableID, Integer entryID,
@@ -256,7 +320,9 @@ public class OnosController implements Controller {
 			for (final Instruction instruction : instructions)
 			{
 				if (instruction.getType() == "OUTPUT")
-					actionModel.add(new ActionModel().setOutputNodeConnector(instruction.getPort()));
+					actionModel.add(new ActionModel()
+						.setOutputNodeConnector(
+								instruction.getPort()));
 				
 				// TODO Others actions
 			}
