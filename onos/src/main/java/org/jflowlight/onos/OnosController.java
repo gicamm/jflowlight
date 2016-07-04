@@ -1,5 +1,7 @@
 package org.jflowlight.onos;
 
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,6 +35,7 @@ import org.jflowlight.onos.model.Instruction;
 import org.jflowlight.onos.model.Link;
 import org.jflowlight.onos.model.Links;
 import org.jflowlight.onos.model.Selector;
+import org.jflowlight.onos.model.Statistic;
 import org.jflowlight.onos.model.Statistics;
 import org.jflowlight.onos.model.Treatment;
 import org.jflowlight.onos.model.topology.Cluster;
@@ -60,14 +63,38 @@ public class OnosController implements Controller {
 		{
 			LinkModel tmp = new LinkModel(link.getDst().getDevice(),Integer.parseInt(link.getDst().getPort()),
 						Integer.parseInt(link.getSrc().getPort()), LinkType.SWITCH_SWITCH);
-			toReturn.put(link.getSrc().getDevice(), tmp);
+			toReturn.put(link.getSrc().getDevice() + "::" + link.getSrc().getPort(), tmp);
 		}
 		return toReturn;
 	}
 	
 	public Statistics getStats()
 	{
-		return client.get(Statistics.class, "onos/v1/statistics/flows/link");
+		Statistics stats = client.get(Statistics.class, "onos/v1/statistics/flows/link");
+		Map<String, LinkModel> links = getLinks();
+		for (final Statistic stat : stats.getStatistics())
+		{
+			String url = stat.getLink();
+			try
+			{
+				String query = new URL(url).getQuery();
+				String[] pairs = query.split("&");
+				Map<String, String> query_pairs = new ConcurrentHashMap<>();
+				for (String pair : pairs) {
+			        int idx = pair.indexOf("=");
+			        query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+			    }
+				String deviceId = query_pairs.get("device");
+				String port = query_pairs.get("port");
+				stat.setTheLink(links.get(deviceId + "::" + port));
+				stat.setDevice(deviceId);
+				stat.setPort(Integer.parseInt(port));
+			} catch (Exception e) {}
+			
+			
+			
+		}
+		return stats;
 	}
 	@Override
 	public Map<String, OpenflowNode> getHosts() throws JolException {
@@ -296,7 +323,7 @@ public class OnosController implements Controller {
 		client.post("/onos/v1/flows/"+switchID, json);
 		
 	}
-
+	// TODO entryID as a String
 	@Override
 	public void deleteFlowEntry(String switchID, Integer tableID,
 			Integer entryID) throws JolException {
@@ -319,11 +346,14 @@ public class OnosController implements Controller {
 			final List<ActionModel> actionModel = new ArrayList<>();
 			for (final Instruction instruction : instructions)
 			{
-				if (instruction.getType() == "OUTPUT")
-					actionModel.add(new ActionModel()
-						.setOutputNodeConnector(
-								instruction.getPort()));
-				
+				if (instruction.getType().contains("OUTPUT"))
+				{
+					ActionModel action = new ActionModel();
+					action.setOutputNodeConnector(
+							instruction.getPort());
+					actionModel.add(action);
+					
+				}
 				// TODO Others actions
 			}
 			instructionModel.setActions(actionModel);
