@@ -324,8 +324,15 @@ public class OnosController implements Controller {
 		
 	}
 
+	@Override
+	public void deleteFlowEntry(final String switchID,
+								final Integer tableID,
+								final Integer entryID) throws JolException {
+		deleteFlowEntry(switchID, tableID, String.valueOf(entryID));
+	}
+
 	public void deleteFlowEntry(String switchID, Integer tableID,
-			String entryID) throws JolException {
+								String entryID) throws JolException {
 		client.delete("/onos/v1/flows/" + switchID + "/" + entryID);
 	}
 	
