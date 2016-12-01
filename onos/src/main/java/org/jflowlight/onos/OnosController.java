@@ -323,11 +323,10 @@ public class OnosController implements Controller {
 		client.post("/onos/v1/flows/"+switchID, json);
 		
 	}
-	// TODO entryID as a String
-	@Override
+
 	public void deleteFlowEntry(String switchID, Integer tableID,
-			Integer entryID) throws JolException {
-		client.delete("/onos/v1/flows/" + switchID + entryID.toString());
+			String entryID) throws JolException {
+		client.delete("/onos/v1/flows/" + switchID + "/" + entryID);
 	}
 	
 	private FlowModel buildFlowModel(final FlowRule sourceFlow, final Integer tableID)
